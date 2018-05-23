@@ -1,0 +1,110 @@
+<div class="content">
+  <app-topo></app-topo>
+  <div class="container">
+  <main>
+    <h3 class="text-center">Eventos</h3>
+    <hr>
+    <button id="addEvento" class="btn btn-outline-primary btn-block" (click)="abreModalCriacao($event, manutencao)">Adicionar</button>
+    <div class="table-responsive">
+    <table class="table table-striped table-bordered" *ngIf="eventos.length">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Descrição do evento</th>
+          <th scope="col">Ver mais</th>
+          <th scope="col">Excluir</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of eventos; let i = index" [id]="i">
+          <th scope="row">{{ i+1 }}</th>
+          <td>{{ item.name | descricao:40 }}</td>
+          <td><button class="btn btn-primary" [id]="item._id" (click)="abreModalEdicao($event, manutencao, c)">Visualizar</button></td>
+          <td><button class="btn btn-danger" [id]="item._id" (click)="abreModalExclusao($event, exclusao)">Excluir</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    <!-- <div class="item text-center" *ngFor="let item of eventos;" [id]="item._id">
+      <div class="row evento-titulo">
+        <div class="col-xs-10">
+          <p class="">{{ item.name | descricao:25 }}</p>
+        </div>
+        <div class="col-xs-2">
+          <div class="form-inline">
+            <button class="btn btn-primary btn-sm evento-acao" [id]="item._id" (click)="abreModalEdicao($event, manutencao, c)">Visualizar</button>
+          </div> 
+        </div>
+      </div>
+    </div>  -->
+    <div class="alert alert-danger text-center" *ngIf="!eventos.length">
+      <b>Você ainda não possui eventos cadastrados!</b>
+      <hr>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL CRICAÇÃO E EDIÇÃO DE EVENTO  -->
+
+<ng-template #manutencao let-c="close" let-d="close">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Evento</h5>
+      <button type="button" class="close" aria-label="Close" (click)="c()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="formulario" (ngSubmit)="executaFuncao(c)">
+        <div class="form-group">
+          <label class="col-form-label">Descrição do Evento:</label>
+          <input type="text" class="form-control" formControlName="name">
+        </div>
+        <div class="form-group">
+          <label class="col-form-label">Data de inicio do Evento:</label>
+          <input type="date" class="form-control" formControlName="initialDate">
+        </div>
+        <div class="form-group">
+          <label class="col-form-label">Horário de inicio do Evento:</label>
+          <input type="time" class="form-control" formControlName="initialTime">
+        </div>
+        <div class="form-group">
+          <label class="col-form-label">Data de finalização do Evento:</label>
+          <input type="date" class="form-control" formControlName="finalDate">
+        </div>
+        <div class="form-group">
+          <label sclass="col-form-label">Horário de finalização do Evento:</label>
+          <input type="time" class="form-control" formControlName="finalTime">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="fechaModalAcao" class="btn btn-secondary" (click)="c()">Cancelar</button>
+          <!-- <button type="button" *ngIf="acao==='edicao'" class="btn btn-danger" (click)="abreModalExclusao($event, exclusao, c)">Excluir</button> -->
+          <button class="btn btn-primary" type="submit" [disabled]="!formulario.valid || isLoading">{{ acao === 'edicao' ? 'Editar' : 'Criar' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+
+<!-- MODAL EXCLUSÃO DE EVENTO  -->
+
+<ng-template #exclusao let-fecha="close" let-esconde="close">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Excluir Evento</h5>
+      <button type="button" aria-label="Close" (click)="fecha()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="eventoUsuario">
+      <p>Tem certeza da exclusão do evento {{ eventoUsuario.name || '' | descricao:20 }}?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="fecha()">Cancelar</button>
+      <button type="button" class="btn btn-danger" [disabled]="isLoading" (click)="deletaEvento(fecha)">Excluir</button>
+    </div>
+  </div>
+</ng-template>
+
+</div>

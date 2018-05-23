@@ -1,0 +1,50 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="text-center">Cadastro</h3>
+    <form [formGroup]="formulario" (ngSubmit)="cadastrarUsuario()">
+      <div class="form-group">
+        <input 
+          type="email" 
+          class="form-control" 
+          placeholder="E-mail"
+          formControlName="email"
+        >
+      </div>
+      <div class="form-group">
+        <input 
+          type="text"
+          class="form-control" 
+          placeholder="Nome completo"
+          formControlName="name"
+        >
+      </div>
+      <div class="form-group">
+        <input 
+          type="password"
+          class="form-control" 
+          placeholder="Senha"
+          formControlName="password"
+        >
+      </div>
+      <div class="form-group">
+        <input 
+          type="password"
+          class="form-control" 
+          placeholder="Repita sua senha"
+          formControlName="password_confirmation"
+        >
+      </div>
+      <button [disabled]="!formulario.valid" type="submit" class="btn btn-primary btn-sm btn-block">Cadastre-se</button>
+    </form>
+    <hr />
+    <p class="small text-center">Ao cadastrar-se, você concorda com nossos <b>Termos</b> e <b>Política de Privacidade</b>.</p>
+  </div>
+</div>
+<br />
+<div class="card" >
+  <div class="card-body">
+    <p class="card-text text-center">
+      Tem uma conta? <a (click)="alteraComponente()" class="card-link">Faça login</a>
+    </p> 
+  </div>
+</div>

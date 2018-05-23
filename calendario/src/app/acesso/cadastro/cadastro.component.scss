@@ -1,0 +1,17 @@
+
+a.card-link {
+  &:hover {
+    color: rgb(39, 39, 248);
+  }
+  cursor: pointer;
+  text-decoration: underline;
+  color: rgb(39, 39, 248);
+}
+
+input.ng-invalid.ng-touched {
+  border: solid 1px red;
+}
+
+input.ng-valid.ng-touched {
+  border: solid 1px green;
+}

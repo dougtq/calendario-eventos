@@ -1,0 +1,6 @@
+<div class="container">
+  <div class="col-md-12" [@anima-user]="estadoUser">
+    <app-login (cadastro)="recebeCadastro($event)" *ngIf="!cadastro"></app-login>
+    <app-cadastro (cadastro)="recebeCadastro($event)" *ngIf="cadastro"></app-cadastro>
+  </div>  
+</div>

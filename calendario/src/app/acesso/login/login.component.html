@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="text-center">Login</h3>
+    <form [formGroup]="formulario" (ngSubmit)="executaLogin()">
+      <div class="form-group">
+        <input 
+          type="email" 
+          class="form-control" 
+          placeholder="E-mail"
+          formControlName="email"
+        >
+      </div>
+      <div class="form-group">
+        <input 
+          type="password"
+          class="form-control" 
+          placeholder="Senha"
+          formControlName="password"
+        >
+      </div>
+      <button [disabled]="!formulario.valid || loading" type="submit" class="btn btn-primary btn-sm btn-block">Entrar</button>
+    </form>
+    <hr />
+    <p class="small text-center">Controle seu calendário de eventos com facilidade.</p>
+  </div>
+</div>
+<br />
+<div class="card">
+  <div class="card-body">
+    <p class="card-text text-center">
+      Não tem uma conta? <a (click)="alteraComponente()" class="card-link">Cadastre-se</a>
+    </p> 
+  </div>
+</div>

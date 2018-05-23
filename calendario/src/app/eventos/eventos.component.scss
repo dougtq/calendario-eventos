@@ -1,0 +1,28 @@
+h3 {
+  &.text-center {
+    padding-top: 20px;
+  }
+}
+
+.content {
+  width: 100%;
+}
+
+.alert {
+  &.alert-danger {
+    margin-top: 15px;
+  }
+
+}
+
+table {
+  margin-top: 20px;
+}
+
+input.ng-invalid.ng-touched {
+  border: solid 1px red;
+}
+
+input.ng-valid.ng-touched {
+  border: solid 1px green;
+}
