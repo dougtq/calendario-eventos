@@ -4,6 +4,7 @@ Essas instruções vão deixar uma cópia funcional do projeto em sua máquina l
 
 ## Pré-requisitos
 
+* [Git](https://git-scm.com/book/pt-br/v2/Come%C3%A7ando-Instalando-o-Git)
 * [MongoDB](https://www.mongodb.com/download-center?jmp=homepage#community)
 * [Nodejs && NPM](https://nodejs.org/)
 * [Docker](https://www.docker.com/get-docker) - **Apenas para produção (back-end)**
@@ -14,49 +15,49 @@ Garanta que o serviço do banco de dados esteja ativo e disponível
 ## Clonando
 
 Primeiro é necessário clonar o projeto:
-```sh
-git clone https://github.com/dougtq/calendario-eventos.git
+```
+$ git clone https://github.com/dougtq/calendario-eventos.git
 ```
 
 E entre na pasta do projeto:
 ```sh
-cd calendario-eventos
+$ cd calendario-eventos
 ```
 
 # Back-End
 Entre na pasta do back-end:
 ```sh
- cd server-calendario
+$ cd server-calendario
 ```
 
 Instale as dependencias do projeto:
 
-```js
-npm install 
+```
+$ npm install 
 ```
 
 ## Variáveis de ambiente (Env)
 Renomeie o arquivo .env.example para .env assim:
 
-```sh
-mv .env.example .env
+```
+$ mv .env.example .env
 ```
 ## Rodando o Back-End
 
 Execute o comando
 ```js
-npm run build:start //  ou => npm run dev
+$ npm run build:start //  ou => npm run dev
 ```
 
 ## Rodando testes
 
 Use esse script para rodar os testes:
-```sh
-npm run test
+```
+$ npm run test
 ```
 Use esse script para testes contínuos:
-```sh
-npm run test:live
+```
+$ npm run test:live
 ```
 
 
@@ -64,21 +65,21 @@ npm run test:live
 
 Abra outra instância de terminal para o front-end
 
-Entre na pasta do back-end:
+Entre na pasta do front-end:
 ```sh
-cd calendario-eventos && cd calendario
+$ cd calendario-eventos && cd calendario
 ```
 
 Instale as dependencias do projeto:
 
-```sh
-npm install
+```
+$ npm install
 ```
 
 Execute o comando
 
-```sh
-ng serve
+```
+$ ng serve
 ```
 
 E então abra o projeto no seu navegador de preferência no link http://localhost:4200
@@ -118,4 +119,4 @@ docker-compose up -d
 
 ## Licença
 
-Esse projeto foi criado sob a licença MIT - veja [LICENÇA](LICENSE) para mais detalhes
+Esse projeto foi criado sob a licença MIT - veja a [LICENÇA](LICENSE) para mais detalhes
