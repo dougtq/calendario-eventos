@@ -1,0 +1,352 @@
+swagger: '2.0'
+info:
+  description: CalendarioAPI Documentation
+  version: 1.0.0
+  title: CalendarioAPI
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: douglas.expalves@gmail.com
+host: '0.0.0.0:3000'
+basePath: /api
+tags:
+  - name: usuários
+    description: Operações com usuário
+  - name: eventos
+    description: Operações com evento
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Create user
+      operationId: createUser
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: user object
+          required: true
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              name:
+                type: string
+              password:
+                type: string
+                format: password
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error'
+  /users/session:
+    post:
+      tags:
+        - users
+      summary: Logs user into the system
+      description: 'Logs user into the system'
+      operationId: loginUser
+      produces:
+        - application/json
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+          headers:
+            Authorization:
+              type: string
+              format: string
+              description: jwt token
+        '400':
+          description: Invalid username/password supplied
+          schema:
+            $ref: '#/definitions/Error'
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error'
+  /events:
+    post:
+      tags:
+        - events
+      summary: Create event
+      operationId: createEvent
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Jwt
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Event object
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Event'
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error'
+  '/tasks/{_id}/author/{author}':
+    delete:
+      tags:
+        - tasks
+      summary: Delete task
+      operationId: deleteTask
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Jwt
+          required: true
+          type: string
+        - in: path
+          name: _id
+          description: id do evento
+          required: true
+          type: string
+        - in: path
+          name: author
+          description: id of the author of the event
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - tasks
+      summary: Update task
+      operationId: updateTask
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Jwt
+          required: true
+          type: string
+        - in: path
+          name: _id
+          description: id of the task
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Task object
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+              done:
+                type: boolean
+                default: false
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error'
+  '/tasks/{task}/author/{author}':
+    get:
+      tags:
+        - tasks
+      summary: Get One task from the user
+      operationId: getOneTask
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Jwt
+          required: true
+          type: string  
+        - in: path
+          name: task
+          description: _id of the task
+          required: true
+          type: string
+        - in: path
+          name: author
+          description: _id of the author
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Task'
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error'  
+  '/tasks/author/{author}':
+    get:
+      tags:
+        - tasks
+      summary: Get All user tasks
+      operationId: getAllTasks
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Jwt
+          required: true
+          type: string
+        - in: path
+          name: author
+          description: _id of the user
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Task'
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error'
+  '/tasks/{task}/status/{done}':
+    patch:
+      tags:
+        - tasks
+      summary: Get One task from the user
+      operationId: updateTaskStatus
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          description: Jwt
+          required: true
+          type: string
+        - in: path
+          name: task
+          description: _id of the task
+          required: true
+          type: string
+        - in: path
+          name: done
+          description: _id of the author
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Task'
+        default:
+          description: an error ocurred
+          schema:
+            $ref: '#/definitions/Error' 
+definitions:
+  User:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: Id do usuário
+      name:
+        type: string
+        description: Nome do usuário
+      email:
+        type: string
+        description: E-mail do usuário
+      password:
+        type: string
+        description: Senha do usuário
+      createdAt:
+        type: string
+        description: Data de criação do usuário
+  Event:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: Id do evento
+      name:
+        type: string
+        description: Nome/Descrição do evento
+      author:
+        type: string
+        description: Id do usuário que criou o evento 
+      createdAt:
+        type: string
+        description: Data de criação do evento
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+        description: Código textual do erro
+      message:
+        type: string
+        description: Mensagem do erro ocorrido
+      status:
+        type: integer
+        format: int32
+        description: Status http do erro
+externalDocs:
+  description: Acesse o Swagger
+  url: 'http://swagger.io'
