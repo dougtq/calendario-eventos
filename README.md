@@ -59,15 +59,6 @@ Use esse script para testes contínuos:
 npm run test:live
 ```
 
-## Executar back-end com Docker
-
-Inicie o projeto com docker-compose
-
-**Certifique-se que as portas dos dois containers (banco e API) já não estão sendo usadas e altere a variável DB_HOST do arquivo .env para apontar para o container do banco: mongo**
-
-```sh
-docker-compose up -d
-```
 
 # Front-End
 
@@ -90,9 +81,23 @@ Execute o comando
 ng serve
 ```
 
+E então abra o projeto no seu navegador de preferência no link http://localhost:4200
+
+
 ## Documentação
 
 Há uma documentação Swagger da API  no caminho [./server-calendario/docs/swagger](./server-calendario/docs/swagger/calendario.yaml) para ser importada no [Editor Swagger](https://editor.swagger.io/)
+
+
+## Executar back-end com Docker
+
+Inicie o projeto com docker-compose
+
+**Certifique-se que as portas dos dois containers (banco e API) já não estão sendo usadas e altere a variável DB_HOST do arquivo .env para apontar para o container do banco: mongo**
+
+```sh
+docker-compose up -d
+```
 
 ## Ferramentas usadas
 
