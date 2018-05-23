@@ -63,7 +63,7 @@ npm run test:live
 
 Inicie o projeto com docker-compose
 
-**Certifique-se que as portas dos dois containers (banco e API) já não estão sendo usadas**
+**Certifique-se que as portas dos dois containers (banco e API) já não estão sendo usadas e altere a variável DB_HOST do arquivo .env**
 
 ```sh
 docker-compose up -d
