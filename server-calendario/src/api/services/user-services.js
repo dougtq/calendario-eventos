@@ -84,7 +84,6 @@ const createUser = ({ name, email, password }) => {
       throw new Error('create_user_error')
       
     } catch (err) {
-      console.log(err);
       return reject(errorTreater(err.message))
     }
     

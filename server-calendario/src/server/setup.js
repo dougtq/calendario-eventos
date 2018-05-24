@@ -25,7 +25,7 @@ function Start() {
 			console.error(err)
 			process.exit(1)
 		}
-		console.info('Server running on port: '+ app.get('port'))
+		console.info('Servidor sendo executado na porta:', app.get('port'))
 	})
 }
 

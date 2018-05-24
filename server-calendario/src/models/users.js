@@ -1,6 +1,6 @@
-import connection from './../db/mongo'
+import connection from '../db/mongo'
 
-const users = new connection.Schema({
+const usersSchema = new connection.Schema({
 	name: {
 		type: String,
 		required: true
@@ -31,4 +31,6 @@ const users = new connection.Schema({
 	}
 })
 
-export default connection.model('users', users)
+const usersModel = connection.model('users', usersSchema)
+
+export default usersModel

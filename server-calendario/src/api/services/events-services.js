@@ -4,12 +4,7 @@ import { errorTreater } from './../../helpers/treater'
 const findByAuthor = ({ author }) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const data = await events.find({ author }).sort({ createdAt: 'desc' })
-      //.populate('author')
-
-      // const otherEvents = await events.where('author').ne(author).sort({ createdAt: 'desc' })
-      // .populate('author')
-      // console.log(otherEvents)
+      const data = await events.find({ author }).sort({ initialDate: 'desc' }).limit(50)
 
       return resolve(data)
     } catch (err) {

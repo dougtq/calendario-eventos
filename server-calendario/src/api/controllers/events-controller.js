@@ -19,23 +19,22 @@ routing.post('/events', sessionCheckers, eventCheckers, async (req, res) => {
 
 
 routing.get('/events/author/:author', sessionCheckers, async (req, res) => {
-  const { author } = req.params
-
   try {
+    const { author } = req.params
     const data = await findByAuthor({ author })
     
     return res.send({ data, status: 201 }).status(201)
   } catch (err) {
-    return res.status(err.status).send({ data: { message: err.message, code: data.code }, status: data.status })
+    return res.status(err.status).send({ data: { message: err.message, code: err.code }, status: err.status })
   }
 })
 
 routing.put('/events/:_id/author/:author', sessionCheckers, eventCheckers, async (req, res) => {
-  const { _id, author } = req.params
-  const { name, initialDate, finalDate, initialTime, finalTime } = req.body
-
   try {
+    const { _id, author } = req.params
+    const { name, initialDate, finalDate, initialTime, finalTime } = req.body
     const data = await updateEvent({ _id, name, initialDate, finalDate, initialTime, finalTime, author })
+    
     return res.send({
       data,
       status: 201

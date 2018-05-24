@@ -1,8 +1,7 @@
 import mongoose from 'mongoose'
+import connection from '../db/mongo'
 
-import connection from './../db/mongo'
-
-const events = new connection.Schema({
+const eventsSchema = new connection.Schema({
 	name: {
 		type: String,
 		required: true
@@ -25,7 +24,7 @@ const events = new connection.Schema({
 	},
 	author: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'user',
+		ref: 'users',
 		required: true,
 		trim: true
 	},
@@ -35,5 +34,6 @@ const events = new connection.Schema({
 	}
 })
 
+const eventsModel = connection.model('events', eventsSchema)
 
-export default connection.model('events', events)
+export default eventsModel

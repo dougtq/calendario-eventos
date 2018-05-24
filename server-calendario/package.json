@@ -16,7 +16,7 @@
     "clean": "./node_modules/.bin/rimraf ./dist",
     "build": "npm run clean && babel src/ -d dist/",
     "build:start": "npm run build && clear && npm run start",
-    "start": "./node_modules/.bin/babel-node ./dist/loader.js",
+    "start": "node ./dist/loader.js",
     "prod": "./node_modules/.bin/pm2 start ./dist/loader.js --name CalendarioAPI",
     "dev": "./node_modules/.bin/nodemon",
     "lint": "node_modules/.bin/eslint src/**/*.js",

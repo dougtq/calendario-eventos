@@ -122,12 +122,12 @@ paths:
           description: an error ocurred
           schema:
             $ref: '#/definitions/Error'
-  '/tasks/{_id}/author/{author}':
+  '/events/{_id}/author/{author}':
     delete:
       tags:
-        - tasks
-      summary: Delete task
-      operationId: deleteTask
+        - events
+      summary: Delete event
+      operationId: deleteevent
       produces:
         - application/json
       parameters:
@@ -161,9 +161,9 @@ paths:
             $ref: '#/definitions/Error'
     put:
       tags:
-        - tasks
-      summary: Update task
-      operationId: updateTask
+        - events
+      summary: Update event
+      operationId: updateEvent
       produces:
         - application/json
       parameters:
@@ -174,12 +174,12 @@ paths:
           type: string
         - in: path
           name: _id
-          description: id of the task
+          description: id of the event
           required: true
           type: string
         - in: body
           name: body
-          description: Task object
+          description: event object
           required: true
           schema:
             type: object
@@ -203,46 +203,13 @@ paths:
         default:
           description: an error ocurred
           schema:
-            $ref: '#/definitions/Error'
-  '/tasks/{task}/author/{author}':
-    get:
-      tags:
-        - tasks
-      summary: Get One task from the user
-      operationId: getOneTask
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: Authorization
-          description: Jwt
-          required: true
-          type: string  
-        - in: path
-          name: task
-          description: _id of the task
-          required: true
-          type: string
-        - in: path
-          name: author
-          description: _id of the author
-          required: true
-          type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/Task'
-        default:
-          description: an error ocurred
-          schema:
             $ref: '#/definitions/Error'  
-  '/tasks/author/{author}':
+  '/events/author/{author}':
     get:
       tags:
-        - tasks
-      summary: Get All user tasks
-      operationId: getAllTasks
+        - events
+      summary: Get All user events
+      operationId: getAllevents
       produces:
         - application/json
       parameters:
@@ -262,44 +229,11 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Task'
+              $ref: '#/definitions/event'
         default:
           description: an error ocurred
           schema:
             $ref: '#/definitions/Error'
-  '/tasks/{task}/status/{done}':
-    patch:
-      tags:
-        - tasks
-      summary: Get One task from the user
-      operationId: updateTaskStatus
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: Authorization
-          description: Jwt
-          required: true
-          type: string
-        - in: path
-          name: task
-          description: _id of the task
-          required: true
-          type: string
-        - in: path
-          name: done
-          description: _id of the author
-          required: true
-          type: integer
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/Task'
-        default:
-          description: an error ocurred
-          schema:
-            $ref: '#/definitions/Error' 
 definitions:
   User:
     type: object
