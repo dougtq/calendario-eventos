@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('instagram-clone App', () => {
+describe('calendario App', () => {
   let page: AppPage;
 
   beforeEach(() => {

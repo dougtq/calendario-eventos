@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 import { EventosService } from './eventos.service';
 import { Evento } from '../shared/evento.model';
@@ -19,18 +20,67 @@ export class EventosComponent implements OnInit {
     'initialDate': new FormControl(null, [Validators.required]),
     'initialTime': new FormControl(null, [Validators.required]),
     'finalDate': new FormControl(null, [Validators.required]),
-    'finalTime': new FormControl(null, [Validators.required])});
+    'finalTime': new FormControl(null, [Validators.required])
+  });
 
   public eventos: Array<Evento> = [];
   public eventoUsuario: Evento;
   public acao: string;
-  public isLoading = false;
-  // public modalManutencao: any;
+  public carregando = false;
+  public sobrescreveEvento = false;
 
   constructor(private eventosService: EventosService, private handler: HandlerService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.getEventos();
+  }
+
+  private zeraCamposDatas(nomeEvento: string): void {
+    if (!confirm(`Você já possui o evento ${nomeEvento} ocorrendo no mesmo período, deseja continuar?`)) {
+      this.formulario.controls['initialDate'].setValue(null);
+      this.formulario.controls['initialTime'].setValue(null);
+      this.formulario.controls['finalDate'].setValue(null);
+      this.formulario.controls['finalTime'].setValue(null);
+    }
+  }
+
+  public verificaDataEventos(): void {
+    const novaDataInicial = Date.parse(this.formulario.value.initialDate + ' ' + this.formulario.value.initialTime);
+    const novaDataFinal = Date.parse(this.formulario.value.finalDate + ' ' + this.formulario.value.finalTime);
+
+    this.eventos.find((ev, i, array) => {
+      const dataInicialExistente = Date.parse(ev.initialDate +  ' ' + ev.initialTime);
+      const dataFinalExistente = Date.parse(ev.finalDate +  ' ' + ev.finalTime);
+      if (novaDataInicial <= dataInicialExistente && novaDataFinal >= dataFinalExistente) {
+        if (this.acao === 'edicao' && ev._id !== this.eventoUsuario._id) {
+          this.zeraCamposDatas(ev.name);
+          return true;
+        } else if (this.acao === 'criacao') {
+          this.zeraCamposDatas(ev.name);
+          return true;
+        }
+      } else if (novaDataInicial >= dataInicialExistente && novaDataInicial <= dataFinalExistente) {
+        if (this.acao === 'edicao' && ev._id !== this.eventoUsuario._id) {
+          this.zeraCamposDatas(ev.name);
+          return true;
+        } else if (this.acao === 'criacao') {
+          this.zeraCamposDatas(ev.name);
+          return true;
+        }
+      } else if (novaDataFinal >= dataInicialExistente && novaDataFinal <= dataFinalExistente) {
+        if (this.acao === 'edicao' && ev._id !== this.eventoUsuario._id) {
+          this.zeraCamposDatas(ev.name);
+          return true;
+        } else if (this.acao === 'criacao') {
+          this.zeraCamposDatas(ev.name);
+          return true;
+        }
+      }
+    });
+  }
+
+  public formataData(data: string, hora: string): string {
+    return moment(data + ' ' + hora).format('DD/MM/YYYY H:mm');
   }
 
   private validacao(): boolean {
@@ -53,7 +103,6 @@ export class EventosComponent implements OnInit {
     this.limpaForm();
     this.acao = 'criacao';
     this.modalService.open(modal, { centered: true });
-    console.log(this.acao);
   }
 
   public abreModalEdicao(e, modal): void {
@@ -61,7 +110,7 @@ export class EventosComponent implements OnInit {
     this.modalService
       .open(modal, { centered: true });
 
-    this.eventos.map((item: Evento, index: number) => {
+    this.eventos.find((item: Evento, index: number): boolean => {
       if (item._id === e.target.id) {
         this.eventoUsuario = item;
         this.formulario.controls['name'].setValue(this.eventoUsuario.name);
@@ -69,15 +118,17 @@ export class EventosComponent implements OnInit {
         this.formulario.controls['initialTime'].setValue(this.eventoUsuario.initialTime);
         this.formulario.controls['finalDate'].setValue(this.eventoUsuario.finalDate);
         this.formulario.controls['finalTime'].setValue(this.eventoUsuario.finalTime);
+
+        return true;
       }
     });
-    console.log(this.acao);
   }
 
   public abreModalExclusao(e, modal): void {
-    this.eventos.map((item: Evento, index: number) => {
+    this.eventos.find((item: Evento, index: number): boolean => {
       if (item._id === e.target.id) {
         this.eventoUsuario = item;
+        return true;
       }
     });
     this.modalService
@@ -85,7 +136,8 @@ export class EventosComponent implements OnInit {
   }
 
   public executaFuncao(closeModal): void {
-    if (this.formulario.valid) {
+    if (this.formulario.valid || this.validacao()) {
+      this.verificaDataEventos();
       if (this.acao === 'criacao') {
         this.addEvento(closeModal);
       } else if (this.acao === 'edicao') {
@@ -115,6 +167,7 @@ export class EventosComponent implements OnInit {
       try {
         const novoEvento = await this.eventosService.addEvento(evento);
         this.eventos = [novoEvento, ...this.eventos];
+        this.sobrescreveEvento = false;
         this.getEventos();
         closeModal();
       } catch (err) {
@@ -132,13 +185,11 @@ export class EventosComponent implements OnInit {
     try {
       await this.eventosService.deletaEvento(this.eventoUsuario._id);
       const eventoIndex = this.eventos.indexOf(this.eventoUsuario);
-      // console.log(resp);
 
       this.eventos.splice(eventoIndex, 1);
       closeModal();
       this.getEventos();
     } catch (err) {
-      console.log(err);
       if (err.data) {
         this.handler.showUserError(err.data.message, 'Temos um problema!');
       } else {
@@ -165,6 +216,7 @@ export class EventosComponent implements OnInit {
         const eventoIndex = this.eventos.indexOf(this.eventoUsuario);
         this.eventos[eventoIndex] = eventoEditado;
         this.getEventos();
+        this.sobrescreveEvento = false;
         closeModal();
       }
     } catch (err) {
