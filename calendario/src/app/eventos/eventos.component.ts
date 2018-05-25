@@ -36,12 +36,12 @@ export class EventosComponent implements OnInit {
   }
 
   private zeraCamposDatas(nomeEvento: string): void {
-    if (!confirm(`Você já possui o evento ${nomeEvento} ocorrendo no mesmo período, deseja continuar?`)) {
-      this.formulario.controls['initialDate'].setValue(null);
-      this.formulario.controls['initialTime'].setValue(null);
-      this.formulario.controls['finalDate'].setValue(null);
-      this.formulario.controls['finalTime'].setValue(null);
-    }
+    // tslint:disable-next-line:max-line-length
+    this.handler.showUserError(`Você já possui o evento ${nomeEvento} ocorrendo no mesmo período!`, 'Há outro evento marcado nesse período');
+    this.formulario.controls['initialDate'].setValue(null);
+    this.formulario.controls['initialTime'].setValue(null);
+    this.formulario.controls['finalDate'].setValue(null);
+    this.formulario.controls['finalTime'].setValue(null);
   }
 
   public verificaDataEventos(): void {
