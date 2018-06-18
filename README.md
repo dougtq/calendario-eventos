@@ -1,4 +1,4 @@
-# Calendário de Eventos TokenLab - Douglas Alves
+# Calendário de Eventos
 
 Essas instruções vão deixar uma cópia funcional do projeto em sua máquina local.
 
